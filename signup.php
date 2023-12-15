@@ -1,3 +1,17 @@
+<?php
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    $err="";
+include 'partials/dbconnect.php';
+$username=$_POST['username'];
+$password=$_POST['password'];
+$cpassword=$_POST['cpassword'];
+$exists=false;
+if(($password==$cpassword)&&($exists==false)){
+$sql= "INSERT INTO `users` (`username`, `password`, `dt`) VALUES ('$username', '$password', current_timestamp());";
+$result =mysqli_query($conn ,$sql);
+}
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -15,14 +29,20 @@
 
 <body>
     <?php require 'partials/nav.php'; ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success</strong> Your account is now created and you can login.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container">
         <h1 class="text-center">Signup to our Website</h1>
 
         <!-- Form Starts -->
-        <form action="/loginsystem/signup.php" method="POST">
+        <form action="/LoginSystem_PHP/signup.php" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="email" class="form-control" id="username" name="username" aria-describedby="emailHelp">
+                <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
