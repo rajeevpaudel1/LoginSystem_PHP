@@ -1,6 +1,8 @@
 <?php
+$showAlert=false;
+$showError=false;
 if($_SERVER["REQUEST_METHOD"]=="POST"){
-    $err="";
+
 include 'partials/dbconnect.php';
 $username=$_POST['username'];
 $password=$_POST['password'];
@@ -9,6 +11,12 @@ $exists=false;
 if(($password==$cpassword)&&($exists==false)){
 $sql= "INSERT INTO `users` (`username`, `password`, `dt`) VALUES ('$username', '$password', current_timestamp());";
 $result =mysqli_query($conn ,$sql);
+if($result){
+    $showAlert =true;
+}
+}
+else{
+    $showError="Passwords do not match ";
 }
 }
 ?>
@@ -29,12 +37,23 @@ $result =mysqli_query($conn ,$sql);
 
 <body>
     <?php require 'partials/nav.php'; ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?php
+    if($showAlert){
+        echo'
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Success</strong> Your account is now created and you can login.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+            <span aria-hidden="true">&times;</span></button></div>';
+    }   
+    if($showError){
+        echo'
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error !</strong>'.$showError.'
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button></div>';
+    }  
+    ?>
+    
     <div class="container">
         <h1 class="text-center">Signup to our Website</h1>
 
